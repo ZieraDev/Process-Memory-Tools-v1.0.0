@@ -1,0 +1,193 @@
+# Process Memory Tools - Configuration Examples
+# Author: ZieraDev
+#
+# This file contains example configurations and use cases for the tools.
+
+# ============================================
+# Process Memory Modifier Examples
+# ============================================
+
+# Basic usage - modify a function in notepad
+ProcessModifier.exe notepad.exe GetProcAddress 0x12345678
+
+# Modify LoadLibraryA in calculator
+ProcessModifier.exe calc.exe LoadLibraryA 0xDEADBEEF
+
+# Write a large 64-bit value
+ProcessModifier.exe target.exe GetProcAddress 0x123456789ABCDEF0
+
+# Common kernel32.dll functions you can target:
+# - GetProcAddress
+# - LoadLibraryA
+# - LoadLibraryW
+# - CreateFileA
+# - CreateFileW
+# - ReadFile
+# - WriteFile
+# - VirtualAlloc
+# - VirtualProtect
+# - GetModuleHandleA
+# - GetModuleHandleW
+
+# ============================================
+# Window Controller Examples
+# ============================================
+
+# Move window to top-left corner
+WindowController.exe notepad.exe 0 0
+
+# Move window to specific position
+WindowController.exe chrome.exe 100 200
+
+# Center window on screen
+WindowController.exe vscode.exe 0 0 center
+
+# Track window position (continuously move)
+WindowController.exe notepad.exe 500 300 track
+
+# ============================================
+# Common Workflows
+# ============================================
+
+# Workflow 1: Multi-window arrangement
+# Arrange three applications in a grid layout
+WindowController.exe vscode.exe 0 0
+WindowController.exe chrome.exe 960 0
+WindowController.exe cmd.exe 0 540
+
+# Workflow 2: Security testing on your application
+# 1. Start your test application
+# 2. Modify specific function pointers
+ProcessModifier.exe MyTestApp.exe GetProcAddress 0x00000000
+ProcessModifier.exe MyTestApp.exe LoadLibraryA 0xFFFFFFFF
+
+# Workflow 3: CTF Challenge manipulation
+# Typical CTF scenario
+ProcessModifier.exe challenge.exe TargetFunction 0x41414141
+
+# ============================================
+# Hex Value Examples
+# ============================================
+
+# NOP instruction (x86): 0x90
+ProcessModifier.exe target.exe SomeFunction 0x90909090
+
+# Common test patterns:
+# 0x00000000 - NULL pointer
+# 0xDEADBEEF - Dead beef (common test pattern)
+# 0xCAFEBABE - Cafe babe
+# 0x41414141 - AAAA (buffer overflow pattern)
+# 0x42424242 - BBBB (buffer overflow pattern)
+# 0x90909090 - NOP sled
+# 0xCCCCCCCC - INT3 breakpoint (x86)
+
+# ============================================
+# Batch Scripts
+# ============================================
+
+# Example batch script to modify multiple processes
+# Save as: modify_all.bat
+
+@echo off
+echo Starting Process Memory Modification...
+ProcessModifier.exe notepad.exe GetProcAddress 0x12345678
+ProcessModifier.exe calc.exe LoadLibraryA 0x90909090
+echo Done!
+
+# Example batch script for window arrangement
+# Save as: arrange_windows.bat
+
+@echo off
+echo Arranging windows...
+WindowController.exe vscode.exe 0 0
+timeout /t 1
+WindowController.exe chrome.exe 960 0
+timeout /t 1
+WindowController.exe cmd.exe 0 540
+echo Windows arranged!
+
+# ============================================
+# PowerShell Scripts
+# ============================================
+
+# Example PowerShell script
+# Save as: modify_process.ps1
+
+# Ensure running as Administrator
+if (-NOT ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+    Write-Warning "Please run as Administrator!"
+    exit
+}
+
+# Modify process
+& .\ProcessModifier.exe notepad.exe GetProcAddress 0x12345678
+
+Write-Host "Process modified successfully!" -ForegroundColor Green
+
+# ============================================
+# Notes and Best Practices
+# ============================================
+
+# 1. Always run as Administrator
+# 2. Verify process name before execution
+# 3. Keep backup of original values if possible
+# 4. Use in isolated/test environments only
+# 5. Respect legal and ethical boundaries
+# 6. Document all modifications for research purposes
+
+# ============================================
+# Troubleshooting Common Issues
+# ============================================
+
+# Issue: "Process not found"
+# Solution: Verify the process is running with Task Manager
+
+# Issue: "Failed to open process"
+# Solution: Run as Administrator
+
+# Issue: "Function not found"
+# Solution: Verify function exists in kernel32.dll
+#           Use tools like Dependency Walker to check
+
+# Issue: "VirtualProtectEx failed"
+# Solution: Process may have anti-tampering protection
+#           Try different target or disable security software (in test environment)
+
+# ============================================
+# Security Research Examples
+# ============================================
+
+# Test application resilience to function pointer corruption
+ProcessModifier.exe MyApp.exe GetProcAddress 0x00000000
+
+# Test window behavior under rapid movement
+WindowController.exe TestApp.exe 0 0 track
+
+# Simulate memory corruption scenarios
+ProcessModifier.exe TestApp.exe LoadLibraryA 0xCCCCCCCC
+
+# ============================================
+# Educational Use Cases
+# ============================================
+
+# Learn about:
+# - Process memory layout
+# - Function hooking concepts
+# - Memory protection mechanisms
+# - Window message handling
+# - Inter-process communication
+
+# Experiment with:
+# - Different hex values
+# - Different target functions
+# - Different processes
+# - Window positioning algorithms
+
+# ============================================
+# End of Examples
+# ============================================
+
+# For more information, see:
+# - README.md
+# - docs/USAGE.md
+# - GitHub: github.com/ZieraDev/ProcessMemoryTools
